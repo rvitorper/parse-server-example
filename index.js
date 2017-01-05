@@ -20,6 +20,7 @@ var api = new ParseServer({
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   },
+  restAPIKey: process.env.REST_API_KEY,
   push: JSON.parse(process.env.PARSE_SERVER_PUSH || "{}"),
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
@@ -29,22 +30,20 @@ var api = new ParseServer({
 var app = express();
 
 // Serve static assets from the /public folder
-app.use('/public', express.static(path.join(__dirname, '/public')));
+//app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-var mountPath = process.env.PARSE_MOUNT || '/parse';
-app.use(mountPath, api);
+//var mountPath = process.env.PARSE_MOUNT || '/parse';
+//app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
-app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
-});
+app.use('/', api);
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
-app.get('/test', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
-});
+//app.get('/test', function(req, res) {
+//  res.sendFile(path.join(__dirname, '/public/test.html'));
+//});
 
 var port = process.env.PORT || 1337;
 var httpServer = require('http').createServer(app);
